@@ -1,3 +1,4 @@
+import 'package:contador/config.dart';
 import 'package:contador/models/Jogado.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,16 +43,16 @@ class _JogoPageState extends State<JogoPage> {
     );
   }
 
-  IconData? ResouverIcone(OpcoesGame? opcao) {
+  Image? ResouverIcone(OpcoesGame? opcao) {
     debugPrint('opcao ${opcao}');
 
     if (opcao == null) return null;
 
-    if (opcao == OpcoesGame.Pedra) return Icons.beach_access;
+    if (opcao == OpcoesGame.Pedra) return Image.asset(imagemPedra);
 
-    if (opcao == OpcoesGame.Papel) return Icons.pan_tool;
+    if (opcao == OpcoesGame.Papel) return Image.asset(imagemPapel);
 
-    if (opcao == OpcoesGame.Tesoura) return Icons.pan_tool_alt;
+    if (opcao == OpcoesGame.Tesoura) return Image.asset(imagemTesoura);
   }
 
   @override
@@ -61,7 +62,9 @@ class _JogoPageState extends State<JogoPage> {
         title: const Text('Jogo Pedra, Papel e Tesoura.'),
         actions: [
           IconButton(
-            onPressed: () => { },
+            onPressed: () => {
+
+            },
             icon: const Icon(Icons.fact_check_outlined),
           ),
         ],
@@ -71,8 +74,8 @@ class _JogoPageState extends State<JogoPage> {
         onPageChanged: updatePage,
         children: [
           Consumer<JogoController>(
-            builder: (context, controller, _) {
-              final jogador1 = controller.jogado1;
+            builder: (context, jogoController, _) {
+              final jogador1 = jogoController.jogado1;
 
               if (jogador1 == null) {
                 return const Center(
@@ -89,14 +92,11 @@ class _JogoPageState extends State<JogoPage> {
                       style: TextStyle(fontSize: 30),
                     ),
                   ),
+                  Text("Ponto(s): ${jogador1.score}"),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 80),
                     child: Column(children: [
-                      Icon(
-                        ResouverIcone(jogador1.opcao),
-                        color: Colors.black,
-                        size: 120.0,
-                      ),
+                      ResouverIcone(jogador1.opcao) ?? Image.asset(imagemLogoJogo),
                       Text("${jogador1.opcao ?? ''}",
                         style: TextStyle(fontSize: 20.0),
                       )
@@ -105,42 +105,31 @@ class _JogoPageState extends State<JogoPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      IconButton(
-                        icon: const Icon(
-                          Icons.beach_access,
-                          color: Colors.blue,
-                          size: 36.0,
-                          semanticLabel:
-                              'Text to announce in accessibility modes',
-                        ),
-                        onPressed: () => {
+                      GestureDetector(
+                        child: Image.asset(imagemPedra),
+                        onTap: () => {
                           setState(() {
                             jogador1.setJogada(OpcoesGame.Pedra);
                           }),
+                          changePage(1),
                         },
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.pan_tool,
-                          color: Colors.blue,
-                          size: 36.0,
-                        ),
-                        onPressed: () => {
+                      GestureDetector(
+                        child: Image.asset(imagemPapel),
+                        onTap: () => {
                           setState(() {
                             jogador1.setJogada(OpcoesGame.Papel);
                           }),
+                          changePage(1),
                         },
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.pan_tool_alt,
-                          color: Colors.blue,
-                          size: 36.0,
-                        ),
-                        onPressed: () => {
+                      GestureDetector(
+                        child: Image.asset(imagemTesoura),
+                        onTap: () => {
                           setState(() {
                             jogador1.setJogada(OpcoesGame.Tesoura);
                           }),
+                          changePage(1),
                         },
                       ),
                     ],
@@ -150,8 +139,8 @@ class _JogoPageState extends State<JogoPage> {
             },
           ),
           Consumer<JogoController>(
-            builder: (context, controller, _) {
-              final jogador2 = controller.jogado2;
+            builder: (context, jogoController, _) {
+              final jogador2 = jogoController.jogado2;
 
               if (jogador2 == null) {
                 return const Center(
@@ -168,14 +157,11 @@ class _JogoPageState extends State<JogoPage> {
                       style: TextStyle(fontSize: 30),
                     ),
                   ),
+                  Text("Ponto(s): ${jogador2.score}"),
                   Padding(
                       padding: EdgeInsets.symmetric(vertical: 80),
                       child: Column(children: [
-                        Icon(
-                          ResouverIcone(jogador2.opcao),
-                          color: Colors.black,
-                          size: 120.0,
-                        ),
+                        ResouverIcone(jogador2.opcao) ?? Image.asset(imagemLogoJogo),
                         Text("${jogador2.opcao ?? ''}",
                           style: TextStyle(fontSize: 20.0),
                         )
@@ -184,45 +170,34 @@ class _JogoPageState extends State<JogoPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      IconButton(
-                        icon: const Icon(
-                          Icons.beach_access,
-                          color: Colors.blue,
-                          size: 36.0,
-                          semanticLabel:
-                          'Text to announce in accessibility modes',
-                        ),
-                        onPressed: () => {
+                      GestureDetector(
+                        child: Image.asset(imagemPedra),
+                        onTap: () => {
                           setState(() {
                             jogador2.setJogada(OpcoesGame.Pedra);
                           }),
-                        controller.VerificarGanhador(),
+                          jogoController.VerificarGanhador(context),
+                          changePage(0),
                         },
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.pan_tool,
-                          color: Colors.blue,
-                          size: 36.0,
-                        ),
-                        onPressed: () => {
+                      GestureDetector(
+                        child: Image.asset(imagemPapel),
+                        onTap: () => {
                           setState(() {
                             jogador2.setJogada(OpcoesGame.Papel);
                           }),
-                          controller.VerificarGanhador(),
+                          jogoController.VerificarGanhador(context),
+                          changePage(0),
                         },
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.pan_tool_alt,
-                          color: Colors.blue,
-                          size: 36.0,
-                        ),
-                        onPressed: () => {
+                      GestureDetector(
+                        child: Image.asset(imagemTesoura),
+                        onTap: () => {
                           setState(() {
                             jogador2.setJogada(OpcoesGame.Tesoura);
                           }),
-                          controller.VerificarGanhador(),
+                          jogoController.VerificarGanhador(context),
+                          changePage(0),
                         },
                       ),
                     ],

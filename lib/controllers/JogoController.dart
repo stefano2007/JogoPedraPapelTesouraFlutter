@@ -18,14 +18,37 @@ class JogoController extends ChangeNotifier{
     jogado2.setJogada(opcao);
     notifyListeners();
   }
-  void VerificarGanhador(){
+  void VerificarGanhador(BuildContext context){
+
+    if(jogado1.opcao == null || jogado2.opcao == null){
+      mostraMensagem('Um ou mais pendente de jogar', context);
+      return;
+    }
+
     Jogado? Ganhado = service.VerificarGanhador(jogado1, jogado2);
     if(Ganhado != null){
       Ganhado.incrementScore();
-      notifyListeners();
       debugPrint('Jogador ${Ganhado.name} ganhou!');
+      mostraMensagem('Jogador ${Ganhado.name} ganhou!', context);
+
     }else{
       debugPrint('Empatou!');
+      mostraMensagem('Empatou!', context);
     }
+
+    jogado1.opcao = null;
+    jogado2.opcao = null;
+    notifyListeners();
   }
+
+  void mostraMensagem(String mensagem, BuildContext context){
+
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(mensagem),
+      ),
+    );
+  }
+
 }
