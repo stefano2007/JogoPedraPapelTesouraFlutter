@@ -9,7 +9,6 @@ class JogoController extends ChangeNotifier{
   JogoService service;
   JogoController({required this.service });
 
-
   void JogaPlay1(OpcoesGame opcao){
     jogado1.setJogada(opcao);
     notifyListeners();
@@ -50,5 +49,4 @@ class JogoController extends ChangeNotifier{
       ),
     );
   }
-
 }
