@@ -47,24 +47,11 @@ class _JogoPageState extends State<JogoPage> {
     );
   }
 
-  Image? ResouverIcone(OpcoesGame? opcao) {
-    debugPrint('ResouverIcone opcao ${opcao}');
-
-    if (opcao == null) return null;
-
-    if (opcao == OpcoesGame.Pedra) return Image.asset(imagemPedra);
-
-    if (opcao == OpcoesGame.Papel) return Image.asset(imagemPapel);
-
-    if (opcao == OpcoesGame.Tesoura) return Image.asset(imagemTesoura);
-  }
-
   void onTapPlayer(Jogado player, OpcoesGame opt){
       setState(() {
         player.setJogada(opt);
       });
   }
-
 
   @override
   Widget build(BuildContext context) {
