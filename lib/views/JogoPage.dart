@@ -1,4 +1,5 @@
 import 'package:contador/config.dart';
+import 'package:contador/controllers/AppController.dart';
 import 'package:contador/models/Jogado.dart';
 import 'package:contador/telaJogo.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:contador/controllers/JogoController.dart';
 
 class JogoPage extends StatefulWidget {
-  const JogoPage({Key? key, required this.title}) : super(key: key);
+  final Function() notifyParent;
+
+  const JogoPage({Key? key, required this.title, required this.notifyParent}) : super(key: key);
 
   final String title;
 
@@ -67,11 +70,12 @@ class _JogoPageState extends State<JogoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Jogo Pedra, Papel e Tesoura.'),
+        title: Text(widget.title),
         actions: [
           IconButton(
             onPressed: () => {
-
+              AppController.instance.changeModoNoturno(),
+              widget.notifyParent()
             },
             icon: const Icon(Icons.refresh_outlined),
           ),
