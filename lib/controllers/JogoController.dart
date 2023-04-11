@@ -28,11 +28,8 @@ class JogoController extends ChangeNotifier{
     Jogado? Ganhado = service.VerificarGanhador(jogado1, jogado2);
     if(Ganhado != null){
       Ganhado.incrementScore();
-      debugPrint('Jogador ${Ganhado.name} ganhou!');
-      mostraMensagem('Jogador ${Ganhado.name} ganhou!', context);
-
+      mostraMensagem('${Ganhado.name} ganhou!', context);
     }else{
-      debugPrint('Empatou!');
       mostraMensagem('Empatou!', context);
     }
 
@@ -42,6 +39,7 @@ class JogoController extends ChangeNotifier{
   }
 
   void mostraMensagem(String mensagem, BuildContext context){
+    debugPrint(mensagem);
 
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(

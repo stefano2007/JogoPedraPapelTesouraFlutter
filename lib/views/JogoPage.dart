@@ -1,5 +1,6 @@
 import 'package:contador/config.dart';
 import 'package:contador/models/Jogado.dart';
+import 'package:contador/telaJogo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,6 +56,13 @@ class _JogoPageState extends State<JogoPage> {
     if (opcao == OpcoesGame.Tesoura) return Image.asset(imagemTesoura);
   }
 
+  void onTapPlayer(Jogado player, OpcoesGame opt){
+      setState(() {
+        player.setJogada(opt);
+      });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +73,7 @@ class _JogoPageState extends State<JogoPage> {
             onPressed: () => {
 
             },
-            icon: const Icon(Icons.fact_check_outlined),
+            icon: const Icon(Icons.refresh_outlined),
           ),
         ],
       ),
@@ -75,134 +83,56 @@ class _JogoPageState extends State<JogoPage> {
         children: [
           Consumer<JogoController>(
             builder: (context, jogoController, _) {
-              final jogador1 = jogoController.jogado1;
+              final jogador = jogoController.jogado2;
 
-              if (jogador1 == null) {
+              if (jogador == null) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
 
-              return Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(30),
-                    child: Text(
-                      'Play 1: ${jogador1.name}',
-                      style: TextStyle(fontSize: 30),
-                    ),
-                  ),
-                  Text("Ponto(s): ${jogador1.score}"),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 80),
-                    child: Column(children: [
-                      ResouverIcone(jogador1.opcao) ?? Image.asset(imagemLogoJogo),
-                      Text("${jogador1.opcao ?? ''}",
-                        style: TextStyle(fontSize: 20.0),
-                      )
-                    ],)
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      GestureDetector(
-                        child: Image.asset(imagemPedra),
-                        onTap: () => {
-                          setState(() {
-                            jogador1.setJogada(OpcoesGame.Pedra);
-                          }),
-                          changePage(1),
-                        },
-                      ),
-                      GestureDetector(
-                        child: Image.asset(imagemPapel),
-                        onTap: () => {
-                          setState(() {
-                            jogador1.setJogada(OpcoesGame.Papel);
-                          }),
-                          changePage(1),
-                        },
-                      ),
-                      GestureDetector(
-                        child: Image.asset(imagemTesoura),
-                        onTap: () => {
-                          setState(() {
-                            jogador1.setJogada(OpcoesGame.Tesoura);
-                          }),
-                          changePage(1),
-                        },
-                      ),
-                    ],
-                  )
-                ],
+              return TelaJogo(jogador: jogador,
+                onTapPedra: () {
+                  onTapPlayer(jogador, OpcoesGame.Pedra);
+                  print("onTapPedra");
+                } ,
+                onTapPapel: () {
+                  onTapPlayer(jogador, OpcoesGame.Papel);
+                  print("onTapPapel");
+                },
+                onTapTesoura: () {
+                  onTapPlayer(jogador, OpcoesGame.Tesoura);
+                  print("onTapTesoura");
+                }
               );
             },
           ),
           Consumer<JogoController>(
             builder: (context, jogoController, _) {
-              final jogador2 = jogoController.jogado2;
+              final jogador = jogoController.jogado1;
 
-              if (jogador2 == null) {
+              if (jogador == null) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
 
-              return Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(30),
-                    child: Text(
-                      'Play 2: ${jogador2.name}',
-                      style: TextStyle(fontSize: 30),
-                    ),
-                  ),
-                  Text("Ponto(s): ${jogador2.score}"),
-                  Padding(
-                      padding: EdgeInsets.symmetric(vertical: 80),
-                      child: Column(children: [
-                        ResouverIcone(jogador2.opcao) ?? Image.asset(imagemLogoJogo),
-                        Text("${jogador2.opcao ?? ''}",
-                          style: TextStyle(fontSize: 20.0),
-                        )
-                      ],)
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      GestureDetector(
-                        child: Image.asset(imagemPedra),
-                        onTap: () => {
-                          setState(() {
-                            jogador2.setJogada(OpcoesGame.Pedra);
-                          }),
-                          jogoController.VerificarGanhador(context),
-                          changePage(0),
-                        },
-                      ),
-                      GestureDetector(
-                        child: Image.asset(imagemPapel),
-                        onTap: () => {
-                          setState(() {
-                            jogador2.setJogada(OpcoesGame.Papel);
-                          }),
-                          jogoController.VerificarGanhador(context),
-                          changePage(0),
-                        },
-                      ),
-                      GestureDetector(
-                        child: Image.asset(imagemTesoura),
-                        onTap: () => {
-                          setState(() {
-                            jogador2.setJogada(OpcoesGame.Tesoura);
-                          }),
-                          jogoController.VerificarGanhador(context),
-                          changePage(0),
-                        },
-                      ),
-                    ],
-                  )
-                ],
+              return TelaJogo(jogador: jogador,
+                  onTapPedra: () {
+                    onTapPlayer(jogador, OpcoesGame.Pedra);
+                    jogoController.VerificarGanhador(context);
+                    print("onTapPedra");
+                  } ,
+                  onTapPapel: () {
+                    onTapPlayer(jogador, OpcoesGame.Papel);
+                    jogoController.VerificarGanhador(context);
+                    print("onTapPapel");
+                  },
+                  onTapTesoura: () {
+                    onTapPlayer(jogador, OpcoesGame.Tesoura);
+                    jogoController.VerificarGanhador(context);
+                    print("onTapTesoura");
+                  }
               );
             },
           ),
