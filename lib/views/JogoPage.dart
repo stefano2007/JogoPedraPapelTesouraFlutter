@@ -45,7 +45,7 @@ class _JogoPageState extends State<JogoPage> {
   }
 
   Image? ResouverIcone(OpcoesGame? opcao) {
-    debugPrint('opcao ${opcao}');
+    debugPrint('ResouverIcone opcao ${opcao}');
 
     if (opcao == null) return null;
 
@@ -83,7 +83,7 @@ class _JogoPageState extends State<JogoPage> {
         children: [
           Consumer<JogoController>(
             builder: (context, jogoController, _) {
-              final jogador = jogoController.jogado2;
+              final jogador = jogoController.jogado1;
 
               if (jogador == null) {
                 return const Center(
@@ -109,7 +109,7 @@ class _JogoPageState extends State<JogoPage> {
           ),
           Consumer<JogoController>(
             builder: (context, jogoController, _) {
-              final jogador = jogoController.jogado1;
+              final jogador = jogoController.jogado2;
 
               if (jogador == null) {
                 return const Center(
